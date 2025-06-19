@@ -39,7 +39,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && \
 # Install java, python, c and c++
 Run apt-get install -y default-jdk && \
     apt-get install -y python3 python3-pip && \
-    apt-get install -y gcc g++ gdb make cmake && python3-full
+    apt-get install -y gcc g++ gdb make cmake python3-full
 
 RUN \
   echo "**** install runtime dependencies ****" && \
