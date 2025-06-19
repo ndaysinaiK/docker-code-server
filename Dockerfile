@@ -27,27 +27,31 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Go 1.22
-RUN wget https://go.dev/dl/go1.22.0.linux-amd64.tar.gz && \
-    sudo tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz && \
+RUN wget https://go.dev/dl/go1.24.4.linux-amd64.tar.gz && \
+    sudo tar -C /usr/local -xzf go1.24.4.linux-amd64.tar.gz && \
     echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc && \
-    rm go1.22.0.linux-amd64.tar.gz
+    rm go1.24.4.linux-amd64.tar.gz
+
+# Install Node.js 18
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && \
+    sudo apt-get install -y nodejs
+
+# Install java, python, c and c++
+Run apt-get install -y default-jdk && \
+    apt-get install -y python3 python3-pip && \
+    apt-get install -y gcc g++ gdb make cmake 
 
 RUN \
   echo "**** install runtime dependencies ****" && \
   apt-get update && \
   apt-get install -y \
-    git \
     libatomic1 \
     nano \
     net-tools \
-    curl \
-    git \
-    wget \
     zsh \
     gnupg \
     build-essential \
     software-properties-common \
-    locales \
     sudo && \
   echo "**** install code-server ****" && \
   if [ -z ${CODE_RELEASE+x} ]; then \
