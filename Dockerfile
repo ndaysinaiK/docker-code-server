@@ -13,8 +13,6 @@ LABEL maintainer="aptalca"
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV HOME="/config"
 
-USER root
-
 # Install dev tools and sudo
 RUN apt-get update && apt-get install -y \
     sudo \
@@ -27,11 +25,6 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
     locales \
     && rm -rf /var/lib/apt/lists/*
-
-    
-# Grant coder passwordless sudo (if not already in base image)
-RUN echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-USER coder
 
 # Install Go 1.22
 RUN wget https://go.dev/dl/go1.22.0.linux-amd64.tar.gz && \
@@ -47,6 +40,14 @@ RUN \
     libatomic1 \
     nano \
     net-tools \
+    curl \
+    git \
+    wget \
+    zsh \
+    gnupg \
+    build-essential \
+    software-properties-common \
+    locales \
     sudo && \
   echo "**** install code-server ****" && \
   if [ -z ${CODE_RELEASE+x} ]; then \
