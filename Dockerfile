@@ -13,6 +13,32 @@ LABEL maintainer="aptalca"
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV HOME="/config"
 
+USER root
+
+# Install dev tools and sudo
+RUN apt-get update && apt-get install -y \
+    sudo \
+    curl \
+    git \
+    wget \
+    zsh \
+    gnupg \
+    build-essential \
+    software-properties-common \
+    locales \
+    && rm -rf /var/lib/apt/lists/*
+
+    
+# Grant coder passwordless sudo (if not already in base image)
+RUN echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+USER coder
+
+# Install Go 1.22
+RUN wget https://go.dev/dl/go1.22.0.linux-amd64.tar.gz && \
+    sudo tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz && \
+    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc && \
+    rm go1.22.0.linux-amd64.tar.gz
+
 RUN \
   echo "**** install runtime dependencies ****" && \
   apt-get update && \
